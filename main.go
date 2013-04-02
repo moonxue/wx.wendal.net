@@ -1,15 +1,20 @@
 package main
 
 import (
+	"github.com/wendal/goweixin"
 	"net/http"
 )
 
+type WendalWeixinHandler struct {
+	*goweixin.BaseWeiXinHandler
+}
+
+func (w *WendalWeixinHandler) Text(msg goweixin.Message) (reply goweixin.Replay) {
+	reply = goweixin.Replay{}
+	reply.SetContent("OK")
+	return
+}
+
 func main() {
-	http.HandleFunc("/call", func(w http.ResponseWriter, req *http.Request) {
-		if req.Method == "GET" {
-			w.Write([]byte(req.Form.Get("echostr")))
-			return
-		}
-	})
-	http.ListenAndServe(":8884", nil)
+	http.ListenAndServe(":8884", &goweixin.WxHttpHandler{"", &WendalWeixinHandler{}})
 }
