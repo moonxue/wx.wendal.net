@@ -11,16 +11,11 @@ type WendalWeixinHandler struct {
 }
 
 func (w *WendalWeixinHandler) Text(msg goweixin.Message) (reply goweixin.Replay) {
-	reply = goweixin.Replay{}
-	reply.SetContent("OK")
-	return
+	return goweixin.ReplyText("Got it")
 }
 
 func (w *WendalWeixinHandler) Location(msg goweixin.Message) (reply goweixin.Replay) {
-	reply = goweixin.Replay{}
-	log.Println("Mark : " + msg.Label())
-	reply.SetContent("Mark : " + msg.Label())
-	return
+	return goweixin.ReplyTextf("Mark: %s %s %s", msg.Location_X(), msg.Location_Y(), msg.Label())
 }
 
 func main() {
