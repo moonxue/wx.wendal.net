@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/wendal/goweixin"
+	"log"
 	"net/http"
 )
 
@@ -12,9 +13,11 @@ type WendalWeixinHandler struct {
 func (w *WendalWeixinHandler) Text(msg goweixin.Message) (reply goweixin.Replay) {
 	reply = goweixin.Replay{}
 	reply.SetContent("OK")
-	return
+	return reply
 }
 
 func main() {
-	http.ListenAndServe(":8884", &goweixin.WxHttpHandler{"", &WendalWeixinHandler{}})
+	goweixin.DevMode = true
+	goweixin.SetDebug(true)
+	log.Fatal(http.ListenAndServe(":8883", &goweixin.WxHttpHandler{"", &WendalWeixinHandler{}}))
 }
